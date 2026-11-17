@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: driver-route
+          uri: lb://DRIVER-SERVICE          # lb:// = client-side load balancer (Round Robin by default)
+          predicates:
+            - Path=/gateway/**
+          filters:
+            - StripPrefix=1                 # /gateway/driver/info -> /driver/info
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 5
